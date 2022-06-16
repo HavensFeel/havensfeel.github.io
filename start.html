@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Тест</title>
+    
+    <!-- style.css -->
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="welcome_text">
+            <form class="welcome_form" name="welcome_form" onsubmit="submitForm(event)">
+                <input type="text" name="name" placeholder="ФИО" required>
+                <input type="text" name="name" placeholder="Группа" required>
+                <button>Начать тест</button>
+                <div class="container">
+                    <div class="interior">
+                      <a class="btn" href="#open-modal">👋 Правила теста</a>
+                    </div>
+                  </div>
+                  <div id="open-modal" class="modal-window">
+                    <div>
+                      <a href="#" title="Close" class="modal-close">Закрыть</a>
+                      <h1>Правила!</h1>
+                      <div>Тест по Компьютерным сетям</div>
+                      <ul>
+                          <li>Тест ограничен по времени</li>
+                          <li>За каждый правильный вопрос начисляется 1 балл</li>
+                          <li>Всего вопросов будет 50</li>
+                          <li>50 баллов из 50: Оценка 5</li>
+                          <li>45 баллов из 50: Оценка 4</li>
+                          <li>35 баллов из 50: Оценка 3</li>
+                          <li>Ниже 35 баллов: Оценка 2</li>
+                      </ul>
+                      <div><small>Напоминание</small></div>
+                      <a href="1. ВВЕДЕНИЕ.html" target="_blank">👉 Тут можно повторить методическое пособие</div>
+                      </div>
+                  </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- site.js -->
+    <script src="js/start.js"></script>
+</body>
+</html>

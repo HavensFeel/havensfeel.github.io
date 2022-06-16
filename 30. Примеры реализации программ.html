@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/KS.css">    
+</head>
+<body>
+    <header class="bg-ex-gradient-animation">
+        <img src="img/logo_3.png">
+        <h1><a href="index.html" class="underline-one">ГПОУ ТО "ДКИТ"</a></h1>
+    </header>
+    <main>
+        
+				<h1 class='lev2' id='249583'>Примеры реализации программ</h1><div class="advconts advtop"><div id='div-336x280_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_1');
+        });
+    </script>
+</div></div>
+<p><b>Задание 1. </b>Тип эксперимента: пакет.</p>
+<p>Размер пакета: 32-512 байт.</p>
+<p>Тайм-аут: 5 мс.</p>
+<p>Вид соединения: дейтаграмма.</p>
+<p>Размер передаваемых данных: 8 Кбайт.</p>
+<p>Вывод статистики на сервере. Необходимо построить гистограмму, отображающую зависимость времени передачи от размера пакета.</p>
+<p><b>Листинг программы. Реализация на языке C#</b></p>
+<p><b>Модуль «Клиент»</b></p>
+<p>using System;</p>
+<p>using System.Collections.Generic;</p>
+<p>using System.ComponentModel;</p>
+<p>using System.Data;</p>
+<p>using System.Drawing;</p>
+<p>using System.Linq;</p>
+<p>using System.Text;</p>
+<p>using System.Threading.Tasks;</p>
+<p>using System.Windows.Fonns;</p>
+<p>using System.Net;</p>
+<p>using System.Net.Sockets;</p>
+<p>using System.Threading;</p>
+<p>using System.Diagnostics;</p>
+<p>using System.Runtime.InteropServices;</p>
+<p>namespace SIT</p>
+<p>{ public partial class Fonnl : Form</p>
+<p><strong>{</strong></p>
+<div class="advconts adv1"><div id='div-650x333_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_1');
+        });
+    </script>
+</div></div><p>private int localPort; <i>11</i> локальный порт</p>
+<p>private int remotePort; // удаленный порт</p>
+<p>private int timeOut; <i>II</i> тайм-аут</p>
+<p>private long size_data; <i>11</i> размер передаваемых данных</p>
+<p>IPAddress remotelPAddres; // удаленный IP- адрес public int[] sizes = <i>II</i> массив размеров отправляемых пакетов</p>
+<p>new int[] { 32, 64, 128, 256, 512 };</p>
+<p>public int s = 0; <i>II</i> переменная для вывода на экран размера отправленного пакета</p>
+<p>private delegate void InvokeDelegate(); // делегат, для вывода информации</p>
+<p>private AutoResetEvent autoEvent = new AutoResetEvent(false); // события для синхронизации потоков</p>
+<p>private AutoResetEvent autoEvent2 = new AutoResetEvent(false);</p>
+<p>void PrintLabelStart()</p>
+<p><strong>{</strong></p>
+<p>label2.Text = "подключение";</p>
+<p><strong>}</strong></p>
+<p>void PrintLabelConnect()</p>
+<p><strong>{</strong></p>
+<p>label2.Text = "подключено";</p>
+<p><strong>}</strong></p>
+<p>void PrintConnectionO</p>
+<div class="advconts adv2"><div id='div-336x280_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_2');
+        });
+    </script>
+</div></div><p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Подключение к серверуп";</p>
+<p><strong>}</strong></p>
+<p>void PrintConnectionEnd()</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Соединение установленноп";</p>
+<p>richTextBoxl.SelectionStart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p> 
+<p><strong>}</strong></p>
+<p>void PrintRequest()</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Отправлен запросп"; richTextBoxl. Selections tart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void PrintPackedO</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Отправлен пакет размером " + s + " байтп";</p>
+<p>richTextBoxl. Selections tart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void PrintAnsver()</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Получен ответп"; richTextBoxl. Selections tart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<div class="advconts adv3"><div id='div-336x280_hb_3'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_3');
+        });
+    </script>
+</div></div><p><strong>}</strong></p>
+<p>void PrintEnd()</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Отправка данных завер-</p>
+<p>шенап";</p>
+<p>richTextBoxl. Selections tart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void EnableButtonO</p>
+<p><strong>{</strong></p>
+<p>button2.Enabled = true;</p>
+<p><strong>}</strong></p>
+<p>private void Recive()</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p><strong>{</strong></p> 
+<p>UdpClient Recive = new UdpClient(localPort);</p>
+<p>IPEndPoint reciver = null;</p>
+<p>Red ve.Recei ve(ref rec i ver);</p>
+<p>Recive.Close();</p>
+<p>autoEvent.SetO;</p>
+<p>}</p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p>}</p>
+<p><strong>}</strong></p>
+<p>private void ReciveData()</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p>{</p>
+<p>UdpClient Recive = new UdpClient(localPort);</p>
+<p>IPEndPoint reciver = null; while (true)</p>
+<p>{</p>
+<p>Reci ve.Recei ve(ref reciver); autoEvent2.Set();</p>
+<p>}</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>private void Request()</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p>{</p>
+<p>label2.BeginInvoke(new InvokeDelegate(PrintLabelStart)); richTextBox 1 .BeginInvoke(new InvokeDelegate(PrintConnection));</p>
+<p>UdpClient Send = new UdpClient();</p> 
+<p>IPEndPoint sender = new IPEndPoint(remoteIPAddres, remotePort);</p>
+<p>Thread tRec = new Thread (Red ve); tRec.IsBackground = true; tRec.Start();</p>
+<p>string welcome = localPort.ToStringO + + textBox4.Text;</p>
+<p>byte[] data = Encoding.UTF8.GetBytes(welcome);</p>
+<p>while (true)</p>
+<p>{</p>
+<p>Send.Send(data, data.Length, sender);</p>
+<p>richTextBoxl.BeginInvoke(new InvokeDelegate(PrintRequest)); if (autoEvent.WaitOne(lOOO) = true)</p>
+<p><strong>{</strong></p>
+<p>richTextBox 1 .BeginInvoke(new InvokeDele- gate(PrintAnsver));</p>
+<p>break;</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>Send.Close();</p>
+<p>label2.BeginInvoke(new InvokeDelegate(PrintLabelConnect)); richTextBox 1 .BeginInvoke(new InvokeDele- gate (Pri ntConnectionEnd));</p>
+<p>button2.BeginInvoke(new InvokeDelegate(EnableButton));</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p><strong>{</strong></p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>private void SendData()</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p><strong>{</strong></p> 
+<p>UdpClient Send = new UdpClient();</p>
+<p>IPEndPoint sender = new IPEndPoint(remoteIPAddres, remotePort);</p>
+<p>int index = 0; s = sizes[index]; long tempSize = 0;</p>
+<p>Thread tRec2 = new Thread(ReciveData); tRec2.IsBackground = true; tRec2.Start(); while (true)</p>
+<p>{</p>
+<p>byte[] Data = new byte[sizes[index]];</p>
+<p>Send.Send(Data, Data.Length, sender);</p>
+<p>richTextBoxl.BeginInvoke(new InvokeDelegate(PrintPacked)); if (autoEvent2.WaitOne(timeOut) = true)</p>
+<p><strong>{</strong></p>
+<p>tempSize += sizes[index]; richTextBox 1 .BeginInvoke(new InvokeDele- gate(Pri ntAnsver));</p>
+<p>autoEvent2 .Reset();</p>
+<p>Thread.Sleep(50);</p>
+<p><strong>}</strong></p>
+<p>if (tempSize = size_data)</p>
+<p><strong>{</strong></p>
+<p>if (index < (sizes.Length - 1))</p>
+<p>{</p>
+<p>index++; s = sizes [index]; tempSize = 0;</p>
+<p><strong>}</strong></p>
+<p>else</p>
+<p>break;</p>
+<p>tempSize = 0;</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p> 
+<p>byte[] data = Encoding.UTF8.GetBytes("end"); Send.Send(data, data.Length, sender);</p>
+<p>Send.CloseO;</p>
+<p>richTextBox 1 .BeginInvoke(new InvokeDelegate(PrintEnd));</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p><strong>{</strong></p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>public Forml()</p>
+<p><strong>{</strong></p>
+<p>In i ti al i zeComponent(); try {</p>
+<p>// Получение имени компьютера.</p>
+<p>String host = System.Net.Dns.GetHostNameO;</p>
+<p>// Получение ip-адреса.</p>
+<p>System.Net.IPAddress ip = Sys- tem.Net.Dns.GetHostByName(host).AddressList[0]; this.textBox4.Text = ip.ToStringO;</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p><strong>{</strong></p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>private void button l_Click(object sender, EventArgs e)</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p><strong>{</strong></p>
+<p>localPort = int.Parse(textBoxl.Text); remotePort = int.Parse(textBox2.Text); timeOut = int.Parse(textBox5.Text);</p> 
+<p>remotelPAddres = IPAddress.Parse(textBox3.Text); size_data = int.Parse(textBox6.Text);</p>
+<p>Thread tRec = new Thread(Request); tRec.IsBackground = true; tRec.Start();</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>private void button2_Click(object sender, EventArgs e)</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p>{</p>
+<p>Thread tRec = new Thread(SendData); tRec.IsBackground = true; tRec.Start();</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>Модуль «Сервер»</strong></p>
+<p>using System;</p>
+<p>using System.Collections.Generic; using System.ComponentModel; using System.Data; using System.Drawing; using System.Linq;</p> 
+<p>using System.Text;</p>
+<p>using System.Threading.Tasks;</p>
+<p>using System.Windows.Forms;</p>
+<p>using System.Net;</p>
+<p>using System.Net.Sockets;</p>
+<p>using System.Threading;</p>
+<p>using System.Diagnostics;</p>
+<p>namespace SIT2</p>
+<p>{</p>
+<p>public partial class Forml : Form</p>
+<p>{</p>
+<p>private int localPort; // локальный порт</p>
+<p>private int remotePort; // удаленный порт</p>
+<p>IPAddress remotelPAddres; // удаленный IP-адрес int size; // размер принятого пакета</p>
+<p>private AutoResetEvent autoEvent = new AutoResetEvent(false); private delegate void InvokeDelegate(); // делегат, для вывода информации</p>
+<p>private int[] sizes = // массив размеров отправляемых пакетов</p>
+<p>new int[] { 32, 64, 128, 256, 512 };</p>
+<p>private double[] times = new double[]{0, 0, 0, 0, 0}; // массив времен private Stopwatch sWatch = new Stopwatch(); // таймер</p>
+<p>void PrintConnectClientO</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Подключен клиент - " + remotelPAddres.ToStringO + "
+";</p>
+<p>richTextBoxl. Selections tart = richTextBoxl.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void PrintData()</p>
+<p><strong>{</strong></p>
+<p>richTextBoxl.Text += DateTime.Now + " Получен пакет данных размером " + size + " байтп";</p>
+<p>richTextBox l.SelectionStart = richTextBoxl.Text.Length;</p> 
+<p>richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void PrintEnd()</p>
+<p><strong>{</strong></p>
+<p>richTextBox 1.Text += DateTime.Now + " Передача данных завершена^";</p>
+<p>richTextBox l.SelectionStart = richTextBox l.Text.Length; richTextBox 1 .ScrollToCaret();</p>
+<p><strong>}</strong></p>
+<p>void PrintChartO</p>
+<p><strong>{</strong></p>
+<p>chartl.Series["Seriesl"].Points.DataBindXY(sizes, times);</p>
+<p><strong>}</strong></p>
+<p>public Forml()</p>
+<p><strong>{</strong></p>
+<p>InitializeComponentO;</p>
+<p>try</p>
+<p>{</p>
+<p>// Получение имени компьютера.</p>
+<p>String host = System.Net.Dns.GetHostName();</p>
+<p>// Получение ip-адреса.</p>
+<p>System.Net.IPAddress ip = System.Net.Dns.GetHostByName(host). AddressList[0];</p>
+<p>this.textBox2.Text = ip.ToStringO;</p>
+<p>}</p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p>}</p>
+<p><strong>}</strong></p>
+<p>void Connect()</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p>{</p>
+<p>UdpClient receivingUdpClient = new UdpClient(localPort);</p> 
+<p>IPEndPoint RemotelpEndPoint = null;</p>
+<p>byte[] data = receivingUdpClient.Receive(ref RemotelpEndPoint);</p>
+<p>string infoClient = Encoding.UTF8.GetString(data); string port = ip = bool flag = false;</p>
+<p>for (int i = 0; i < infoClient.Length; ++i)</p>
+<p>{</p>
+<p>if (infoClient[i] == '*')</p>
+<p><strong>{</strong></p>
+<p>flag = true; continue;</p>
+<p><strong>}</strong></p>
+<p>if (!flag)</p>
+<p>port += infoClient[i]; else</p>
+<p>ip += infoClient [i];</p>
+<p><strong>}</strong></p>
+<p>remotePort = int.Parse(port); remotelPAddres = IPAddress.Parse(ip);</p>
+<p>UdpClient send = new UdpClient();</p>
+<p>IPEndPoint sendering = new IPEndPoint(remoteIPAddres, remote-</p>
+<p>Port);</p>
+<p>byte[] datagram = new byte[8]; send.Send(datagram, datagram.Length, sendering);</p>
+<p>receivingUdpClient.Close();</p>
+<p>send.Close();</p>
+<p>autoEvent.Set();</p>
+<p>richTextBox 1 .BeginInvoke(new InvokeDelegate (PrintConnectClient));</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p><strong>{</strong></p> 
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>void RecivingO</p>
+<p><strong>{</strong></p>
+<p>try</p>
+<p>{</p>
+<p>autoEvent.WaitOne();</p>
+<p>UdpClient receivingUdpClient = new UdpClient(localPort); IPEndPoint RemotelpEndPoint = null;</p>
+<p>UdpClient send = new UdpClient();</p>
+<p>IPEndPoint sendering = new IPEndPoint(remoteIPAddres, remote-</p>
+<p>Port);</p>
+<p>while (true)</p>
+<p>{</p>
+<p>sWatch.StartO;</p>
+<p>byte[] data = receivingUdpClient.Receive(ref RemotelpEndPoint);</p>
+<p>sWatch.StopO;</p>
+<p>string tempEnd = Encoding.UTF8.GetString(data); if (tempEnd == "end") break; size = data.Length;</p>
+<p>richTextBoxl.BeginInvoke(new InvokeDelegate(PrintData)); byte[] datagram = new byte[8]; send.Send(datagram, datagram.Length, sendering);</p>
+<p>switch (data.Length)</p>
+<p><strong>{</strong></p>
+<p>case 32:</p>
+<p>times[0] += (double)sWatch.ElapsedMilliseconds / 1000; break; case 64:</p>
+<p>times[l] += (double)sWatch.ElapsedMilliseconds / 1000; break;</p> 
+<p>case 128:</p>
+<p>times[2] += (double)sWatch.ElapsedMilliseconds / 1000; break; case 256:</p>
+<p>times[3] += (double)sWatch.ElapsedMilliseconds / 1000; break; case 512:</p>
+<p>times[4] += (double)sWatch.ElapsedMilliseconds / 1000; break;</p>
+<p><strong>};</strong></p>
+<p>sWatch.Reset();</p>
+<p>}</p>
+<p>receivingUdpClient.Close();</p>
+<p>send.Close();</p>
+<p>richTextBox 1 .BeginInvoke(new InvokeDelegate(PrintEnd)); chartl .BeginInvoke(new InvokeDelegate(PrintChart));</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p><strong>{</strong></p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>private void button l_Click(object sender, EventArgs e)</p>
+<p><strong>{</strong></p>
+<p>richTextBox 1.Text += DateTime.Now + " Ожидается подключение клиентап";</p>
+<p>try</p>
+<p><strong>{</strong></p>
+<p>localPort = int.Parse(textBoxl.Text);</p>
+<p>Thread tRecQ = new Thread(Connect); tRecQ.IsBackground = true; tRecQ. Start();</p>
+<p>Thread tRecR = new Thread(Reciving); tRecR.IsBackground = true;</p> 
+<p>tRecR.Start();</p>
+<p><strong>}</strong></p>
+<p>catch(Exception ex)</p>
+<p>{</p>
+<p>MessageBox.Show(ex.ToStringO);</p>
+<p><strong>}</strong></p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+
+<p>Клиент</p>
+<p>Сервер</p>
+<p><b>Задание 2. </b>Объем передаваемых данных. <b>16 Кбайт. </b>Вид соединения: <b>Дейтаграмма.</b></p>
+<p>Таймаут: <b>15 мс.</b></p>
+<p><b>Листинг программы. Реализация на языке C++</b></p>
+<p>#include<vcl.h></vcl.h></p>
+<p>#pragma hdrstop #include <nb30.h></nb30.h></p>
+<p>#include <time.h></time.h></p>
+<p>#include "Unitl.h"</p>
+<p>#pragma package(smart_init)</p> 
+<p>#pragma resource TfMain *fMain;</p>
+<p>TFileStream *inpFile, *outFile;</p>
+<p>LANA_ENUM lan_number;</p>
+<p>NCB neb;</p>
+<p>intWorkingLana=2, nSessions=20, nNames=30, Time0ut=15, count=0, NBNAMENUM=0; int s=0;</p>
+<p>char NameString[]="IOmeHT", PriemString[]="CepBep"; float size=0;</p>
+<p>int VOLUMES []={ 8, 16, 32, 64, 128, 256, 512}; double TIMES[]={0,0,0,0,0,0,0};</p>
+<p>intVolum=8;</p>
+<p>intdeltaX=30;</p>
+<p>#deflne B_S 512 #define TotalSize 24576 void Priem();</p>
+<p>_fastcallTfMain::TfMain(TComponent* Owner)</p>
+<p>: TForm(Owner)</p>
+<p>{</p>
+<p><strong>} boolNbReset(byte 1)</strong></p>
+<p>{</p>
+<p>memset(&amp;ncb,0,sizeof(ncb)); ncb.ncb_command=NCBRESET; ncb.ncb_lana_num=l; ncb.ncb_callname[0]=nSessions; neb. ncb_cal lname [2]=nN ames; if(Netbios(&amp;ncb)!=NRC_GOODRET)</p>
+<p><strong>{</strong></p>
+<p>fMain->Memo->Lines->Add("Reset NCB Error. RetCode: Ox"+IntToStr(ncb.ncb_retcode)); return 0;</p> 
+<p><strong>}</strong></p>
+<p>else return 1;</p>
+<p><strong>} void PaintStatistic()</strong></p>
+<p>{</p>
+<p>int Max=TIMES[0];</p>
+<p>for (int r=l; r<7; r++) if(TIMES[r]>Max) Max=TIMES[r]; int y; int x=0;</p>
+<p>fMain->Im->Canvas->Brush->Color=clWhite;</p>
+<p>fMain->Im->Canvas->Rectangle(0,0,fMain->Im->Width,fMain->Im-</p>
+<p>>Height);</p>
+<p>for (int r=0; r<7; r++)</p>
+<p><strong>{</strong></p>
+<p>if (Max != 0) у = fMain->Im->Height - fMain->Im- >Height*TIMES[r]/(Max* 1.5); else у = 0;</p>
+<p>fMain->Im->Canvas->Brush->Color=clBlue;</p>
+<p>fMain->Im->Canvas->Rectangle(x,y,(x+deltaX),lMain->Im->Height);</p>
+<p>fMain->Im->Canvas->Brush->Color=clWhite;</p>
+<p>fMain->Im->Canvas->TextOutA(x+3,y-30,IntToStr(VOLUMES[r])+" байт"); fMain->Im->Canvas->TextOutA(x+3,y-15,FloatToStr(TIMES[r])+" сек"); x+=deltaX;</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::btFileClick(TObject ^Sender)</p>
+<p>{</p>
+<p>if (OpenDialog->Execute())</p>
+<p><strong>{</strong></p>
+<p>edFile->Text=OpenDialog->FileName; inpFile = new TFileStream(edFile->Text, fmOpenRead); s=inpFile->Size;</p>
+<p>lbFileSize->Caption = IntToStr(s) + " байт";</p> 
+<p>bt4->Enabled = true;</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::FormClose(TObject *Sender, TCloseAction&amp;Action)</p>
+<p>{</p>
+<p>delete inpFile;</p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::rbOtprClick(TObject ^Sender)</p>
+<p>{</p>
+<p>edFile->Enabled=l; btFile->Enabled= 1; lbFileSize->Enabled= 1; btRecv->Visible = 0; bt4->Visible = 1;</p>
+<p>1ЬЫате->СарЬоп="Имя: Клиент";</p>
+<p>}</p>
+<p>void_fastcallTfMain::rbPolClick(TObject ^Sender)</p>
+<p>{</p>
+<p>edFile->Enabled=0; btFi le->Enabled=0; lbFi leS i ze->Enabled=0; bt4->Visible = 0; btRecv->Visible = 1; lbName->Caption="HMH: Сервер";</p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::btLANAClick(TObject *Sender)</p>
+<p>{</p>
+<p>Memo->Lines->Add("-----------------------------------------");</p>
+<p>if (NbReset(WorkingLana))</p>
+<p><strong>{</strong></p>
+<p>memset(&amp;ncb,0,sizeof(ncb));</p>
+<p>ncb.ncb_command=NCBENUM;</p> 
+<p>ncb.ncb_buffer=(unsigned char*)&lan_number; ncb.ncb_length=sizeof(lan_number); if(Netbios(&amp;ncb)==NRC_GOODRET)</p>
+<p>{</p>
+<p>Memo->Lines->Add("LANA Number List:"); for(inti=0; i<lan_number.length; i++)="" memo-="">Lines->Add(IntToStr(i+1)+":</lan_number.length;></p>
+<p>["?+IntToS tr(lan_nu mber.lana[i ])+"]");</p>
+<p>Memo->Lines->Add("-----------------------------------------");</p>
+<p>}</p>
+<p>else</p>
+<p>{</p>
+<p>Memo->Lines->Add("LANA NCB Error. RetCode:</p>
+<p>Ox"+IntToS tr(ncb .ncb_re tcode));</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>btGetLANA->Enabled= 1; edGetLANA->Enabled=l;</p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::btRecvClick(TObject *Sender)</p>
+<p>{</p>
+<p>Priem();</p>
+<p>}</p>
+<p>char Buffer[B_S]={0}; clock_t Begin=clock(); double Tim=0;</p>
+<p>void Priem()</p>
+<p>{</p>
+<p>if(NbReset(WorkingLana))</p>
+<p><strong>{</strong></p>
+<p>TimeOut=S trT oInt(fMai n->edTi meOUT->Text); memset(&amp;ncb,0,sizeof(ncb));</p> 
+<p>ncb.ncb_command=NCBADDNAME;</p>
+<p>neb. ncb_lana_num=W orkingLana;</p>
+<p>ncb.ncb_rto = TimeOut;</p>
+<p>memset(ncb.ncb_name, 0, NCBNAMSZ);</p>
+<p>memcpy(ncb.ncb_name, PriemString, lstrlen(PriemString));</p>
+<p>fMain->Refresh();</p>
+<p>NBNAMENUM=ncb.ncb_num;</p>
+<p>if(Netbios(&amp;ncb)==NRC_GOODRET)</p>
+<p>{</p>
+<p>count=0; while (1)</p>
+<p><strong>{</strong></p>
+<p>fMain->Refresh();</p>
+<p>char Buffer[B_S]={0};</p>
+<p>Buffer[B_S]=NULL;</p>
+<p>count++;</p>
+<p>memset(&amp;neb,0,sizeof(ncb)); ncb.ncb_command=NCBDGREC V; neb. ncb_lana_num=W orkingLana; neb. ncb_num=0xFF; ncb.ncb_buffer=(PUCHAR)Buffer; neb. ncb_length=Vol um;</p>
+<p>if(Netbios(&amp;ncb)==NRC_GOODRET)</p>
+<p>{</p>
+<p>if ( Buffer[l ]=='-' && Buffer[2]=='~' && Buffer[3]=='')</p>
+<p>{</p>
+<p>fMain->Memo->Lines->Add("Coo6uieHHe было получено"); fMain->Memo->Lines->Add(" "); goto Exit;</p>
+<p>}</p>
+<p>if ( Buffer[l]=='~' && Buffer[2]==' ’ && Buffer[3]==' ’)</p>
+<p>{</p>
+<p>Уо1ит*=2;</p>
+<p>count=0;</p>
+<p>fMain->Memo->Lines->Add("Next: "+IntToStr(Volum)+" байт"); fMain->Memo->Lines->Add(" ");</p> 
+<p><strong>}</strong></p>
+<p>else</p>
+<p><strong>{</strong></p>
+<p>fMain->Memo->Lines->Add('TIojiy4eHo"); fMain->Memo->Lines->Add(IntToStr(count)+": "+Buffer); fMain->Memo->Lines->Add(" ");</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>В uffer[B_S ]=NULL;</p>
+<p>} <i>11</i> while } <i>I I</i> if Netbios else {</p>
+<p>fMain->Memo->Lines->Add("ADDNAME NCB Error. RetCode: Ox"+IntToStr(ncb.ncb_retcode));</p>
+<p>fMain->Memo->Lines->Add("-----------------------------------------");</p>
+<p>}</p>
+<p>} <i>11</i> if Reset Exit:</p>
+<p><strong>}</strong></p>
+<p>inti=0;</p>
+<p>//---------------------------------------------------------------------------</p>
+<p>void_fastcallTfMain::bt4Click(TObject ^Sender)</p>
+<p>{</p>
+<p>intSendData=0;</p>
+<p>Volum = VOLUMES [i];</p>
+<p>lbV->Caption="Packet: "+IntToStr(Volum)+" byte(s)"; fMain->Refresh(); char Buffer[B_S]={ 0}; if (NbReset(WorkingLana))</p>
+<p>{</p>
+<p>TimeOut=S trToIn t(edTimeOUT->Tex t);</p>
+<p>memset(&amp;ncb,0,sizeof(ncb));</p>
+<p>ncb.ncb_command=NCBADDNAME;</p> 
+<p>neb. ncb_lana_n um=W orkingLana; ncb.ncb_rto = TimeOut;</p>
+<p>memcpy(&amp;ncb.ncb_name,NameString,lstrlen(NameString));</p>
+<p>fMain->Refresh();</p>
+<p>ncb.ncb_buffer=(PUCHAR)Buffer;</p>
+<p>neb. ncb_length=Vol um;</p>
+<p>memcpy(&amp;ncb.ncb_callname,PriemString,lstrlen(PriemString));</p>
+<p>Netbios(&amp;ncb);</p>
+<p>NBNAMENUM=ncb.ncb_num;</p>
+<p>count=0;</p>
+<p>Begin=clock();</p>
+<p>while(l){</p>
+<p>char Buffer[B_S]={0}; count++;</p>
+<p>if (count>(s/Volum))</p>
+<p><strong>{</strong></p>
+<p>if (Volum == B_S)</p>
+<p>{</p>
+<p>Buffer[B_S]=NULL;</p>
+<p>Buffer[ 1 Buffer[2]='~';</p>
+<p>Buffer[3]='</p>
+<p>neb. ncb_command=NCBDGSEND; ncb.ncb_buffer=(PUCHAR)Buffer; ncb.ncb_length=Volum;//sizeof(Buffer);</p>
+<p>Netbios(&amp;ncb);</p>
+<p>Memo->Lines->Add("Coo6meHne6bmooToenaHO "); Memo->Lines->Add(" ");</p>
+<p>TIMES [i]=Tim;</p>
+<p>deltaX=(fMain->Im->Width)/7;</p>
+<p>PaintStatistic();</p>
+<p>break;</p>
+<p><strong>}</strong></p>
+<p>else</p> 
+<p>{</p>
+<p>Buffer[B_S]=NULL;</p>
+<p>Buffer [1 Buffer[2]=' ’;</p>
+<p>Buffer[3]=</p>
+<p>ncb.ncb_command=NCBDGSEND;</p>
+<p>ncb.ncb_buffer=(PUCHAR)Buffer;</p>
+<p>ncb.ncb_length=Volum;</p>
+<p>Netbios(&amp;ncb);</p>
+<p>Memo->Lines->Add("Next: "+IntToStr(Volum*2)+" byte(s)"); Memo->Lines->Add(" ");</p>
+<p>TIMES [i]=Tim; break;</p>
+<p>}</p>
+<p><strong>}</strong></p>
+<p>else</p>
+<p><strong>{</strong></p>
+<p>Buffer[B_S]=NULL;</p>
+<p>inpFile->Seek(Volum*(count-l), soFromBeginning); inpFile->Read(Buffer, Volum);</p>
+<p>Memo->Lines->Add(IntToStr(count)+":"+ Buffer); Memo->Lines->Add(" "); neb. ncb_command=NCBDGSEND; ncb.ncb_buffer=(PUCHAR)Buffer; neb. ncb_length=Vol um;</p>
+<p>Netbios(&amp;ncb);</p>
+<p>SendData+=Volum;</p>
+<p><strong>}</strong></p>
+<p>Tim=((clock()-Begin)/CLK_TCK);</p>
+<p>fMain->Refresh();</p>
+<p>} // while(l)</p>
+<p>}</p>
+<p>else</p>
+<p>{</p>
+<p>Memo->Lines->Add("OmH6Kanepe<sub>;</sub>aa4H" );</p> 
+<p>Memo->Lines->Add(" ");</p>
+<p><strong>}</strong></p>
+<p>i++;</p>
+<p>if (i< 7) fMain->bt4Click(fMain); else {</p>
+<p>lbV->Caption="Packet:"; i = 0;</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::FormCreate(TObject ^Sender)</p>
+<p>{</p>
+<p>Im->Canvas->Brush->Color=clWhite; Im->Canvas->Rectangle(0,0,Im->Width,Im->Height); rbPol->Checked = 1;</p>
+<p><strong>}</strong></p>
+<p>void_fastcallTfMain::btGetLANAClick(TObject ^Sender)</p>
+<p>{</p>
+<p>WorkingLana=StrToInt(edGetLANA->Text);</p>
+<p>}</p>
+<p>Сервер</p>
+<p><b>Задание </b>3. Тип эксперемента: time out.</p>
+<p>Размер пакета 512 байт.</p>
+<p>TimeOut в диапозоне от 15 до 25 мс.</p>
+<p>Вид соединения: логический канал.</p>
+<p>Размер данных: 32 кбайта.</p>
+<p>Вывод статистики: на клиенте.</p>
+<p><b>Листинг программы. Реализация на языке Kotlin с использованием GUUavaFX</b></p>
+<p><b>ClientMain.kt</b></p>
+<p>import j avafx .appl icati on. Appl ication import javafx.fxml.FXMLLoader import javafx.scene.Parent import javafx.scene.Scene import javafx.stage.Stage class ClientMain : Application() {</p>
+<p>@Throws(Exception: :class) ovenide fun start(primaryStage: Stage) { System.setPropertyC'prism.lcdtext", "false") val root = FXMLLoad-</p>
+<p>er.load<parent>(javaClass.getResource("sample.fxml")) primary Stage, title = "Client" primaryStage.scene = Scene(root, 800.0, 400.0) pri mary S tage. sho w()</parent></p>
+<p>}</p>
+<p>companion object {</p> 
+<p>@JvmStatic</p>
+<p>fun main(args: Array<string>) { launch(Cl ientMai n: rclass.java)</string></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><b>sample.fxml</b></p>
+<p><?xml version=" 1.0" encoding="UTF-8"?></p>
+<p><?import javafx.geometry.Insets?></p>
+<p><?import javafx.scene.chart.CategoryAxis?></p>
+<p><?import javafx.scene.chart.LineChart?></p>
+<p><?import javafx.scene.chart.NumberAxis?></p>
+<p><?import javafx.scene.control.Button?></p>
+<p><?import javafx.scene.control.Label?></p>
+<p><?import javafx.scene.control.TextField?></p>
+<p><?import javafx.scene.layout.BorderPane?></p>
+<p><?import javafx.scene.layout.ColumnConstraints?></p>
+<p><?import javafx.scene.layout.GridPane?></p>
+<p><?import javafx.scene.layout.RowConstraints?></p>
+<p><borderpane maxheight="-Infinity" maxwidth="-Infinity" minheight="- Infinity" minwidth="-Infinity" prefheight="400.0" prefwidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/l" fx:controller="sample.ClientController"></borderpane></p>
+<p><center></center></p>
+<p><linechart fx:id="lineChait" altemativecolumnfillvisible="true" pref-="" height="340.0" prefwidth="800.0" borderpane.alignment="CENTER"> <xaxis></xaxis></linechart></p>
+<p><categoryaxis fx:id="x" side="BOTTOM"></categoryaxis></p>
+<p></p>
+<p><yaxis></yaxis></p>
+<p><numberaxis fx:id="y" side="LEFT"></numberaxis></p>
+<p></p>
+<p></p>
+<p></p>
+<p><bottom></bottom></p> 
+<p><button fx:id="startButton" mnemonicparsing-'false"="" text="Ha4aTb передачу" borderpane.alignment="CENTER"></button></p>
+<p></p>
+<p><top></top></p>
+<p><gridpane borderpane.alignment="CENTER"></gridpane></p>
+<p><col umnc="" ons="" train="" ts=""></p>
+<p><columnconstraints hgrow="SOMETIMES" minwidth=" 10.0" pref-="" width=" 100.0"></columnconstraints></p>
+<p><columnconstraints hgrow="SOMETIMES" minwidth=" 10.0" pref-="" width=" 100.0"></columnconstraints></p>
+<p></p>
+<p><rowconstraints></rowconstraints></p>
+<p><rowconstraints minheight=" 10.0" prefheight="30.0" vgrow="SOMETIMES"></rowconstraints></p>
+<p><rowconstraints minheight="10.0" prefheight="30.0" vgrow="SOMETIMES"></rowconstraints></p>
+<p></p>
+<p><children></children></p>
+<p><button fx:="" id="reffeshButton" mnemonicparsing="false" text="06HOBHTb текущий IP Адрес" gridpane.columnindex='T" /></p>
+<p><Label fx.id-' ciirrentlplabd"="" text-'текущий="" ip="" адресс:"=""></button></p>
+<p><padding></padding></p>
+<p><insets left="20.0"></insets></p>
+<p></p>
+<p><textfield fx.=""></textfield><sup>_</sup>"serv erIpField" promptText="IP Сервера" Grid- Pane.rowIndex=" 1 "></p>
+<p><gridpane.margin></gridpane.margin></p>
+<p><insets left="20.0" right="20.0"></insets></p>
+<p></p>
+<p><label fx:id="totalTimeLabel" gridpane.rowindex='T" Grid- Pane.columnIndex=" 1 "/></p>
+<p></children></p>
+<p></GridPane></p>
+<p></top></p>
+<p><padding></p>
+<p><Insets bottom="5.0" /></p> 
+<p></padding></p>
+<p></BorderPane></p>
+<p><b>Controller.kt</b></p>
+<p>import javafx.fxml.FXML import javafx.scene.chart.Category Axis import javafx.scene.chart.LineChart import javafx.scene.chart.Number Axis import javafx.scene.chart.XYChart import j avafx. scene .control. В u tton import javafx.scene.control.Label import javafx .scene .control .TextField import java.io.*</p>
+<p>import java.net.Networklnterface import java.net.Socket import java.nio.ByteBuffer import java.util.* import java.util.regex.Pattem import kotlin.collections.ArrayList import kotlin.collections.HashMap class Controller {</p>
+<p>@FXML</p>
+<p>lateinit var startButton: Button @FXML</p>
+<p>lateinit var refreshButton: Button @FXML</p>
+<p>lateinit var currentlpLabel: Label @FXML</p>
+<p>lateinit var totalTimeLabel: Label @FXML</p>
+<p>lateinit var serverlpField: TextField @FXML</p>
+<p>lateinit var lineChart: LineChart<Any, Any> @FXML</p>
+<p>lateinit var x: CategoryAxis @FXML</p>
+<p>lateinit var y: NumberAxis private var socket: SocketThread? = null</p>
+<p>class Graph constructor(val lineChart: LineChaiKAny, Any>, val to- talTimeLabel: Label) {</p>
+<p>private var totalTime = OL</p>
+<p>private val data: ArrayList<XYChart.Data<Any, Any» = ArrayList()</p>
+<p>fun addPoint(x: Long, y: Long) {</p>
+<p>val series = XYChait.Series<Any, Any>()</p>
+<p>val point = XYChait.Data<Any, Any>(x.toString(), y)</p>
+<p>data.add(point)</p>
+<p>series.data.addAll(point)</p>
+<p>totalTime += у</p>
+<p>javafx.application.Platform.runLater { if (UineChart.data.isEmptyO) { lineChart.data[0].data.add(point)</p>
+<p>} else {</p>
+<p>lineChart.data.add(series)</p>
+<p><strong>}</strong></p>
+<p>totalTimeLabel.text = "Общее время отправки: $y мс"</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>fun draw() {</p>
+<p>javafx.application.Platfonn.runLater {</p>
+<p>totalTimeLabel.text = "Общее время отправки всех пакетов: StotalTime мс"</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>fun clearO { data.clearO</p>
+<p>if (llineChart.data.isEmptyO) lineChart.data.remove(lineChart.data[0]) totalTimeLabel.text =""</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>lateinit var graph: Graph fun initializeO { startButton.setOnAction { if (IserverlpField.text.isEmptyO && isIpAddress(serverlpField.text)) { tiy {</p>
+<p>socket = SocketThread(serverIpField.text, startButton, graph)</p>
+<p>} catch (e: Exception) { e.printStackTrace()</p>
+<p><strong>}</strong></p>
+<p>socket?.start() if (socket != null) { graph.clearO</p>
+<p>startButton.isDisable = true</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>graph = Graph(lineChart, totalTimeLabel) currentlpLabel.text = "Текущий IP-адрес: " + getCurrentIp() refreshButton.setOnAction {</p>
+<p>currentlpLabel.text = "Текущий IP-адрес: " + getCurrentlpO</p>
+<p><strong>}</strong></p>
+<p>serverlpField.text = getCurrentIp().substring(0, getCurrentlpO.length - 2) totalTimeLabel.text = "Общее время отправки:"</p>
+<p><strong>}</strong></p>
+<p>private fun getCurrentlpO: String {</p>
+<p>val networklnterfaces = Networklnterface.getNetworklnterfacesO</p>
+<p>while (networklnterfaces.hasMoreElementsO) {</p>
+<p>val networklnterface = networkInterfaces.nextElement()</p>
+<p>val addresses = networklnterface.inetAddresses</p>
+<p>while (addresses.hasMoreElements()) {</p>
+<p>val address = addresses.nextElement()</p>
+<p>if (address.hostAddress != " 127.0.1.1"&& address.hostAddress != 127.0.0.1"</p>
+<p>&& isIpAddress(address.hostAddress)) { return address.hostAddress }</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>return "Устройство не подключено"</p> 
+<p><strong>}</strong></p>
+<p>fun isIpAddress(address: String): Boolean {</p>
+<p>val pattern = Pattem.compile("<sup>A</sup>(([0-9]l[l-9][0-9]ll[0-9]{2}l2[0-4][0- 9] 125 [0-5]).) {3} ([0-9] I [ 1 -9] [0-9] 11 [0-9] {2} 12 [0-4] [0-9] 125 [0-5])$") return pattem.matcher(address).matches()</p>
+<p><strong>}</strong></p>
+<p>private class SocketThread internal constructor(address: String, val button: Button, val graph: Graph): Thread() { val PACKET_SIZE = 512 val DATE_SIZE = 32 * 1024 val MIN_TIME_WAIT = 15 val MAX_TIME_WAIT = 25 val SOCKET_NUMBER = 9999 private val socket: Socket val input: InputStream private val output: OutputStream private val filelnput: FilelnputStream private val buffer = ByteArray(PACKET_SIZE) init {</p>
+<p>socket = Socket(address, SOCKET_NUMBER) socket. soTimeout = 5 * 1000 input = socket.getlnputStreamO output = socket.getOutputStreamO filelnput = FileInputStream("data.txt")</p>
+<p><strong>}</strong></p>
+<p>private val delays: LinkedList<Int> = LinkedList() override fun run() { try {</p>
+<p>var isEnd = false Thread { tiy {</p>
+<p>var receive = true while (receive) {</p>
+<p>val buf = ByteArray(java.lang.Long.BYTES) input.read(buf)</p>
+<p>val delay Real = bytesToLong(buf) if (delayReal == -1L) { receive = false } else if (delayReal == -2L) { continue }</p>
+<p>while (delays.isEmptyO) {</p>
+<p><strong>}</strong></p>
+<p>val delay = delays.removeFirst() ргтЙпГДанныеобработаныза $delayReal <span>mc" +</p>
+<p>"при задержке $delay мс") graph.addPoint(delay.toLong(), delayReal)</p>
+<p><strong>}</strong></p>
+<p>output. write("stop".toByteArray())</p>
+<p>printing "вышел" )</p>
+<p>output.flush()</p>
+<p>input.close()</p>
+<p>socket.closeO</p>
+<p>} catch (e: Exception) {</p>
+<p>e.pri ntStackT race()</p>
+<p><strong>}</strong></p>
+<p>ргпД("Ввод закончен") isEnd = true graph.draw()</p>
+<p>}.stait()</p>
+<p>for (i in 0..(MAX_TIME_WAIT - MIN_TIME_WAIT)) {</p>
+<p>val delay = MIN_TIME_WAIT + i</p>
+<p>for (j in O..DATE_SIZE / PACKET_SIZE) {</p>
+<p>filelnput.read(buffer)</p>
+<p>output, write(buffer)</p>
+<p>output.flush()</p>
+<p>Thread.sleep((delay).toLong())</p>
+<p><strong>}</strong></p>
+<p>delays.addLast(delay) buffer[0] = ' o'.tobyteo="" buffer[l]='n' .tobyte()="" buffer[2]='e' .tobyteq="" buffer[3]='x' .tobyteo="" buffer[4]='t' .tobyte()="" buffer.fill('0'.tobyte(),="" 5)="" output,="" write(buffer)=""></label></p>
+<p>filelnput. channel .position(O)</p>
+<p>println("Данные с задержкой $delay мс между пакетами отправлены")</p>
+<p><strong>}</strong></p>
+<p>output. write("exit".toByteArray())</p>
+<p>output.flushO</p>
+<p>button. isDisable = false</p>
+<p>while (lisEnd) {</p>
+<p><strong>}</strong></p>
+<p>} catch (e: Exception) { e.pri ntStackT race() button. isDisable = false }</p>
+<p><strong>}</strong></p>
+<p>fun bytesToLong(bytes: ByteArray): Long { val buffer = ByteBuffer.allocate(java.lang.Long.BYTES) buffer.put(bytes) buffer.flipO return buffer, long }</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><b>ServerMain.kt</b></p>
+<p>i mport javafx .appli cati on. Appl i cation import javafx.fxml.FXMLLoader import javafx.scene.Parent import javafx.scene.Scene import javafx.stage.Stage import java.io.BufferedReader import java.io.IOException import java.io.InputStreamReader import java.io.PrintWriter import java.net.ServerSocket import java.net.Socket</p>
+<p>/**</p>
+<ul>
+<li>* Created by medium on 31.05.17.</li>
+<li>*/</li>
+</ul>
+<p>class ServerMain: Application() { override fun start(primaryStage: Stage) { System.setPropertyO'prism.lcdtext", "false") val root = FXMLLoader.load<parent>(javaClass.getResource ("main.fxml"))</parent></p>
+<p>primaryStage.title = "Server" primaryStage.scene = Scene(root, 800.0, 400.0) primaryStage.show()</p>
+<p><strong>}</strong></p>
+<p>companion object {</p>
+<p>@JvmStatic</p>
+<p>fun main(args: Array<string>) { launch(ServerMain::class.java)</string></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p><b>main.fxml</b></p>
+<p><?xml version=" 1.0" encoding="UTF-8"?></p>
+<p><?import javafx.geometry.Insets?></p>
+<p><?import javafx.scene.control.Button?></p>
+<p><?import javafx .scene .control .Label ?></p>
+<p><?import javafx.scene.control.TextArea?></p>
+<p><?import javafx.scene.layout.BorderPane?></p>
+<p><?import javafx.scene.layout.ColumnConstraints?></p>
+<p><?import javafx.scene.layout.GridPane?></p>
+<p><?import javafx.scene.layout.RowConstraints?></p>
+<p><borderpane maxheight="-Infinity" maxwidth="-Infinity" minheight="- Infinity" minwidth="-Infinity" prefheight="400.0" prefwidth="800.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/l" fx:controller="ServerController"></borderpane></p>
+<p><center></center></p> 
+<p>cTextArea fx:id="logArea" editable="false" prefHeight="325.0" pref- Width="800.0" wrapText="true" BorderPane.alignment="CENTER" /></p>
+<p></p>
+<p><top></top></p>
+<p><gridpane xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/l"></gridpane></p>
+<p><columnconstraints></columnconstraints></p>
+<p><columnconstraints hgrow="SOMETIMES" maxwidth="584.0" min-="" width="10.0" prefwidth="400.0"></columnconstraints></p>
+<p><columnconstraints maxwidth="439.0" minwidth="200.0" pref-="" width="400.0"></columnconstraints></p>
+<p><columnconstraints maxwidth="439.0" minwidth="200.0" pref-="" width="400.0"></columnconstraints></p>
+<p></p>
+<p><rowconstraints></rowconstraints></p>
+<p><rowconstraints minheight=" 10.0" prefheight="30.0" vgrow="SOMETIMES"></rowconstraints></p>
+<p></p>
+<p><button fx:="" id="refreshButton" mnemonicparsing-'false"="" text="06HOBHTb текущий IP Адрес" gridpane.colurtmindex='T" /></p>
+<p><Label ix:id="currentIpLabel" text-' текущий="" ip-адресе:"=""></button></p>
+<p><padding></padding></p>
+<p><insets left="20.0"></insets></p>
+<p></p>
+<p></p>
+<p><button fx:id="rebootButton" mnemonicparsing="false" text-'перезапустить="" сервер"="" gridpane.columnindex="2"></button></p>
+<p><padding></padding></p>
+<p><insets bottom="10.0" top="10.0"></insets></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p><b>ServerController.kt</b></p>
+<p>import javafx.beans.value.ChangeListener import javafx.fxml.FXML import j avafx. scene .control. В u tton</p>
+<p>import javafx .scene.control .Label</p>
+<p>import javafx.scene.control.TextArea</p>
+<p>import java.net.Networklnterface</p>
+<p>import java.net.ServerSocket</p>
+<p>import java.net.Socket</p>
+<p>import java.util.regex.Pattern</p>
+<p>import javafx.beans.value.ObservableValue</p>
+<p>import java.io.*</p>
+<p>import java.nio.ByteBuffer</p>
+<ul>
+<li>* Created by medium on 31.05.17.</li>
+<li>*/</li>
+</ul>
+<p>class ServerController {</p>
+<p>private val SOCKET_NUMBER = 9999</p>
+<p>private val PACKET_SIZE = 512</p>
+<p>@FXML</p>
+<p>lateinit var refreshButton: Button @FXML</p>
+<p>lateinit var rebootButton: Button @FXML</p>
+<p>lateinit var currentlpLabel: Label @FXML</p>
+<p>lateinit var logArea: TextArea val threadRunnable: Runnable = Runnable { logArea.appendText("CepBep запущенп") var out: OutputStream? = null var servers: ServerSocket? = null var fromclient: Socket? = null javafx.application.Platform.runLater { rebootButton.isDisable = true rebootButton.text = "Сервер запущен"</p>
+<p><strong>}</strong></p>
+<p>try {</p>
+<p>servers = ServerSocket(SOCKET_NUMBER) } catch (e: IOException) { logArea.appendTextCНевозможно прослушать порт " + SOCKET_NUMBER + "п")</p>
+<p><strong>}</strong></p>
+<p>try {</p>
+<p>log Area.appendText( "Ожидание подключения клиента. An") fromclient = servers! !.accept()</p>
+<p>logArea.appendText( "Клиент " + fromclient.inetAddress.hostAddress + подключилсяп")</p>
+<p>} catch (e: IOException) {</p>
+<p>logArea.appendText("HeB03MO>KHO подключить клиентап")</p>
+<p><strong>}</strong></p>
+<p>var "in<sup>4</sup> = fromclient! !.getInputStream()</p>
+<p>var buffer = ByteArray(PACKET_SIZE)</p>
+<p>out = fromclient.getOutputStreamO</p>
+<p>var now = System.currentTimeMillis()</p>
+<p>var input = 'in'.read(buffer)</p>
+<p>now = System.cunentTimeMillisO - now</p>
+<p>var totalTime = OL</p>
+<p>var time = now</p>
+<p>val output: String</p>
+<p>var past: String? = null</p>
+<p>while ((input) != null) {</p>
+<p>var str = String(buffer)</p>
+<p>if (str.contains("exit")ll past == str) {</p>
+<p>break</p>
+<p>} else if (str.contains("Onext")) { out.write(longToBytes(time - now)) out.flushO</p>
+<p>println("Данные обработаны за ${time - now} мс") str = "
+Данные обработаны за ${time - now} мспп" totalTime+=time time = 0 } else {</p>
+<p>out.write(longToBytes(-2L))</p>
+<p>out.flushO</p>
+<p>// println("Пакет обработан за $now мс") str += 'ЛпПакет обработан за $now мсп"</p>
+<p><strong>}</strong></p>
+<p>javafx.application.Platform.runLater { logArea.appendText(str)</p>
+<p><strong>}</strong></p>
+<p>past = str</p>
+<p>now = System.currentTimeMillis() input = 'in'.read(buffer) now = System.cuiTentTimeMillis() - now time += now }</p>
+<p>out.write(longToBytes(-lL))</p>
+<p>out.flushO</p>
+<p>javafx.application.Platfomi.runLater { rebootButton.isDi sable = false rebootButton.text = "Перезапустить сервер"</p>
+<p><strong>}</strong></p>
+<p>out.closeO</p>
+<p><sup>v</sup>in'.close()</p>
+<p>fromclient.closeO</p>
+<p>servers?.close()</p>
+<p>javafx.application.Platfomi.runLater {</p>
+<p>logArea.appendText("06utee время обработки пакетов StotalTime</p>
+<p>мсп")</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>fun initializeO {</p>
+<p>currentlpLabel.text = "Текущий IP адрес: " + getCurrentIp() refreshButton.setOnAction {</p>
+<p>currentlpLabel.text = "Текущий IP адрес: " + getCurrentlpO</p>
+<p><strong>}</strong></p>
+<p>logArea.textPropertyO.addListener { observable, oldValue, newValue -> logArea.scrollTop = java.lang.Double.MAX_VALUE //this will scroll to the bottom</p>
+<p>//use Double.MIN_VALUE to scroll to the top</p>
+<p><strong>}</strong></p> 
+<p>rebootButton.setOnAction { logArea.text ="" startReceive()</p>
+<p><strong>}</strong></p>
+<p>startReceive()</p>
+<p><strong>}</strong></p>
+<p>private fun staitReceive(){</p>
+<p>Thread(threadRunnable).stai1()</p>
+<p><strong>}</strong></p>
+<p>private fun getCurrentIp(): String {</p>
+<p>val networklnterfaces = Networklnterface.getNetworklnterfacesO</p>
+<p>while (networklnterfaces.hasMoreElementsO) {</p>
+<p>val networklnterface = networkInterfaces.nextElement()</p>
+<p>val addresses = networklnterface.inetAddresses</p>
+<p>while (addresses.hasMoreElements()) {</p>
+<p>val address = addresses.nextElement()</p>
+<p>if (address.hostAddress != "I27.0.l.l"&& address.hostAddress != "127.0.0.1"</p>
+<p>&& isIpAddress(address.hostAddress)) { return address.hostAddress }</p>
+<p><strong>}</strong></p>
+<p><strong>}</strong></p>
+<p>return "Устройство не подключено"</p>
+<p><strong>}</strong></p>
+<p>fun isIpAddress(address: String): Boolean {</p>
+<p>val pattern = Pattem.compile("<sup>A</sup>(([0-9]l[l-9][0-9]ll[0-9]{2}l2[0-4][0- 9] I25 [0-5]).) {3} ([0-9] I [ l-9] [0-9] 11 [0-9] {2} I2 [0-4] [0-9] I25 [0-5])$") return pattem.matcher(address).matches()</p>
+<p><strong>}</strong></p>
+<p>fun longToBytes(x: Long): ByteArray { val buffer = ByteBuffer.allocate(java.lang.Long.BYTES) buffer.putLong(x) return buffer.arrayO }</p>
+<p>fun bytesToLong(bytes: ByteArray): Long { val buffer = ByteBuffer.allocate(java.lang.Long.BYTES) buffer.put(bytes) buffer.flipO return buffer.long }</p>
+<p><strong>Пожелании программистам</strong></p>
+<p>Чтобы освоить программирование приложений на выше рассмотренных протоколах, необходимо иметь опыт программирования не меньше 1 года, а чтобы правильно уметь ими пользоваться - как минимум 2-3 года. Для начинающих программистов достаточно изучить основные типы библиотеки VCL (хотя некоторые классы в ней не продуманны и не согласованы). Функциональность и замудренность сетевых классов оставляет желать лучшего, а полезны только классы TIdTCPServer, TIdClient, TIdUDPServer и TldUDPClient. Все остальные сетевые классы нужны, наверное, только самим разработчикам этой библиотеки.</p>
+<p>Внимание!!! При сдаче лабораторных работ <b>ЗАПРЕЩЕНО </b>использовать библиотеку нестандартных типов AltemativeTypes, так как она содержит сетевые классы с автоматическим управлением каналами и протоколами, а значит, нет смысла изучать устройство сокетов. Разрешается только ознакомиться со всеми возможностями этих сетевых протоколов и изучить их свойства. Также запрещено использование в частных и коммерческих целях без уведомления автора.</p>
+<p>В данном пособии рассмотрено 30 % материала по управлению этими протоколами, другие 30 % вы узнаете из лабораторных, а 40 % информации вы уже должны знать, иначе нет смысла даже пытаться программировать с нуля.</p>
+<p><b>САМОЕ ГЛАВНОЕ </b>для программиста - это красивый почерк в его программном коде.</p>
+<p>Для решения задач, связанных с написанием программ для организации обмена данными с сети с использованием сетевых протоколов, в качестве эффективного инструментального средства можно воспользоваться модулем Alternative Types Library.</p><div id="gads_btm" class="advconts advbot"><div id='div-650x333_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_2');
+        });
+    </script>
+</div></div>            
+    </main>
+    <div class="wrap">
+        <a href="29. Программирование протокола NetBIOS.html">
+            <button class="button">Пред</button>
+        </a>
+        <a href="31. Краткое описание модуля Alternative Types Library.html">
+            <button class="button">След</button>
+        </a>
+    </div> 
+</body>
+</html>

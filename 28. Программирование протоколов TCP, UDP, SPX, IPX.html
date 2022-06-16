@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/KS.css">    
+</head>
+<body>
+    <header class="bg-ex-gradient-animation">
+        <img src="img/logo_3.png">
+        <h1><a href="index.html" class="underline-one">ГПОУ ТО "ДКИТ"</a></h1>
+    </header>
+    <main>
+        
+				<h1 class='lev2' id='223205'>Программирование протоколов TCP, UDP, SPX, IPX</h1><div class="advconts advtop"><div id='div-336x280_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_1');
+        });
+    </script>
+</div></div>
+<ul>
+<li>4.1.1. <strong>Описание основных функций управления протоколами</strong></li>
+<li>4.1.1.1. <strong>Функция WSAStartup</strong></li>
+</ul>
+<p>Функция <b>WSAStartup </b>инициализирует библиотеку WS2_32.DLL для использования процессом.</p>
+<p><b>int WSAStartup (</b></p>
+<p><b>WORD </b><span>wVersionRequested<i>,</i></span></p>
+<p><b>LPWSADATA </b><span>lpWSAData</span></p>
+<p><i>)</i>;</p>
+<p>wVersionRequested - Наивысшая версия Windows Sockets, которую вызвавший может использовать.</p>
+<p>lpWSAData - Указатель на память структуры <b>WSADATA </b>для вывода подробной информации о Windows Sockets.</p>
+<p>Функция <b>WSAStartup </b>возвращает ноль при удачном выполнении. Иначе, возвращает код ошибки.</p>
+<p>Приложение должно вызывать одну функцию <b>WSACleanup </b>для каждой удачной функции <b>WSAStartup.</b></p>
+<p><strong>4.1.1.2. Функция WSACleanup</strong></p>
+<p>Функция <b>WSACleanup </b>отключает применение библиотеки WS2_32.DLL.</p>
+<div class="advconts adv1"><div id='div-650x333_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_1');
+        });
+    </script>
+</div></div><p><b>int WSACleanup(void);</b></p>
+<p>Функция не имеет параметров.</p> 
+<p>Возвращаемое значение ноль, если операция удалась. Иначе, возвращаемое значение равно SOCKETJERROR.</p>
+<p><strong>4.1.1.З. Функция getaddrinfo</strong></p>
+<p>Функция <b>getaddrinfo </b>управляет протокольно-независимой трансляцией из имени хоста к адресу.</p>
+<p><b>int getaddrinfo(</b></p>
+<p><b>const char* </b><span>nodename<i>,</i></span></p>
+<p><b>const char* </b><span>servname<i>,</i></span></p>
+<p><b>const struct addrinfo* </b><span>hints<i>,</i></span></p>
+<p><b>struct addrinfo** </b><span>res</span></p>
+<p>);</p>
+<p>nodename - указатель на строку, содержащую имя хоста или его IP- адрес.</p>
+<p>servname - указатель на строку, содержащую имя сервиса или номер порта.</p>
+<p>hints - указатель на структуру <b>addrinfo, </b>которая содержит информацию о совместимом типе сокета.</p>
+<p>res - указатель на список одной или нескольких структур <b>addrinfo, </b>содержащих полную информацию о хосте.</p>
+<p>При удачном выполнении возвращает ноль. Иначе возвращает ненулевое значение, т.е. код ошибки.</p>
+<div class="advconts adv2"><div id='div-336x280_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_2');
+        });
+    </script>
+</div></div><p><strong>4Л. 1.4. Функция freeaddrinfo</strong></p>
+<p>Функция <b>freeaddrinfo </b>освобождает адресное пространство, которое функция <b>getaddrinfo </b>динамически заняла для структуры <b>addrinfo.</b></p>
+<p><b>void freeaddrinfo(</b></p>
+<p><b>struct addrinfo* </b><i>ai</i></p>
+<p><i>)</i> ;</p> 
+<p>ai - указатель на список одной или нескольких структур <b>addrinfo </b>для освобождения.</p>
+<p>Эта функция не возвращает значений.</p>
+<p><strong>4Л. 1.5. Функция socket</strong></p>
+<p>Функция <b>socket </b>создает сокет, который прикреплен к специальному сервису.</p>
+<p><b>SOCKET socket( int </b><span>af<i>, </i><b>int </b><span>type<i>, </i><b>int </b><span>protocol</span></span></span></p>
+<p>);</p>
+<p>af - семейство адресов.</p>
+<p>type - тип для нового сокета. SOCK_STREAM - логический канал или SOCK_DGRAM - дейтаграммы.</p>
+<p>protocol - протокол, который будет использован с сокетом, определенный в семействе адресов.</p>
+<p>Если без ошибок, функция <b>socket </b>вернет номер нового сокета. Иначе, значение, равное INVALID_SOCKET будет возвращено.</p>
+<div class="advconts adv3"><div id='div-336x280_hb_3'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_3');
+        });
+    </script>
+</div></div><p><strong>4.1.1.6. Функция bind</strong></p>
+<p>Функция <b>bind </b>закрепляет локальный адрес с сокетом, <b>int bind(</b></p>
+<p><strong>SOCKET s,</strong></p>
+<p><b>const struct sockaddr* </b><span>name<i>, </i><b>int </b><span>namelen</span></span></p>
+<p><i>)</i> ;</p>
+<p>s - идентификатор незакрепленного сокета.</p> 
+<p>name - адрес, к которому будет закреплен сокет из структуры <b>sockaddr.</b></p>
+<p>namelen - длина значения в параметре name, в байтах.</p>
+<p>Если нет ошибок, функция <b>bind </b>вернет ноль. Иначе она вернет SOCKET_ERROR.</p>
+<p><strong>4Л. 1.7. Функция closesocket</strong></p>
+<p>Функция <b>closesocket </b>закрывает существующий сокет, <b>int closesocket(</b></p>
+<p><b>SOCKET </b><i>s</i></p>
+<p><i>)</i> ;</p>
+<p>s - сокет для закрытия.</p>
+<p>Если нет ошибок, функция <b>closesocket </b>вернет ноль. Иначе она вернет значение, равное SOCKETJERROR.</p>
+<p><strong>4.1.1.8. Функция listen</strong></p>
+<p>Функция <b>listen </b>помещает сокет в состояние, в котором он ожидает входящие соединения.</p>
+<p><strong>int listen(</strong></p>
+<p><b>SOCKET </b><i>s,</i></p>
+<p><b>int </b><span>backlog</span></p>
+<p><i>)</i> ;</p>
+<p>s - закрепленный и несоединенный сокет.</p>
+<p>backlog - максимальное число входящих подключений. SOMAXCONN - максимальное значение.</p>
+<p>Если нет ошибок, функция <b>listen </b>вернет ноль. Иначе она вернет значение, равное SOCKET_ERROR.</p>
+<p><strong>4.1.1.9. Функция connect</strong></p>
+<p>Функция <b>connect </b>осуществляет соединение к сокету.</p> 
+<p><b>int connect(</b></p>
+<p><b>SOCKET </b><i>s,</i></p>
+<p><b>const struct sockaddr* </b><span>name<i>, </i><b>int </b><span>namelen</span></span></p>
+<p>);</p>
+<p>s - несоединенный сокет.</p>
+<p>name - имя сокета в структуре <b>sockaddr, </b>с которым будет соединение, namelen - длина name, в байтах.</p>
+<p>Если нет ошибок, функция <b>connect </b>вернет ноль. Иначе она вернет значение, равное SOCKET_ERROR.</p>
+<p><strong>4.1.1.10. Функция recv</strong></p>
+<p>Функция <b>recv </b>принимает пакеты из соединенного или закрепленного сокета.</p>
+<p><b>int recv(</b></p>
+<p><b>SOCKET s,</b></p>
+<p><b>char* </b><span>buf<i>,</i></span></p>
+<p><b>int </b><span>len<i>,</i></span></p>
+<p><b>int </b><span>flags</span></p>
+<p><i>)</i> ;</p>
+<p>s - соединенный сокет.</p>
+<p>buf - буфер для входящих пакетов.</p>
+<p>len - длина buf, в байтах.</p>
+<p>flags - флаги, определяющие работу (желательно ставить 0).</p>
+<p>Если нет ошибок, функция <b>recv </b>вернет число принятых байт. Если соединение было закрыто, то функция вернет ноль. В других случаях вернет SOCKETJERROR.</p> 
+<p><strong>4.1.1.11. Функция recvfrom</strong></p>
+<p>Функция <b>recvfrom </b>принимает дейтаграммы и значение адреса, <b>int recvfrom (</b></p>
+<p><b>SOCKET </b><i>s, </i><b>char* </b><span>buf<i>, </i><b>int </b><span>len<i>, </i><b>int </b><span>flags<i>,</i></span></span></span></p>
+<p><b>struct sockaddr* </b><span>from<i>, </i><b>int* </b><span>fromlen</span></span></p>
+<p>);</p>
+<p>s - закрепленный сокет.</p>
+<p>buf - буфер для входящих пакетов.</p>
+<p>len - длина buf, в байтах.</p>
+<p>flags - флаги, определяющие работу (желательно ставить 0).</p>
+<p>from - указатель на структуру <b>sockaddr, </b>в которой содержится информация об отправителе.</p>
+<p>fromlen - указатель на размер from, в байтах.</p>
+<p>Если нет ошибок, функция <b>recvfrom </b>вернет число принятых байт. Если соединение было закрыто, то функция вернет ноль. В других случаях вернет SOCKET_ERROR.</p>
+<p><strong>4.1.1.12. Функция send</strong></p>
+<p>Функция <b>send </b>отправляет пакеты соединенному сокету, <b>int send(</b></p>
+<p><b>SOCKET </b><i>s, </i><b>const char* </b><span>buf<i>, </i><b>int </b><i>len,</i></span></p> 
+<p><b>int </b><span>flags</span></p>
+<p><i>)</i> ;</p>
+<ul>
+<li>s - соединенный сокет, buf- буфер для приема пакетов.</li>
+<li>1еп - длина buf, в байтах.</li>
+</ul>
+<p>flags - флаги, определяющие работу (желательно ставить 0).</p>
+<p>Если нет ошибок, функция <b>send </b>вернет число отправленных байт, которое может быть меньше чем значение 1еп. В других случаях вернет SOCKETJERROR.</p>
+<p><b>4.1.1.13. Функция sendto</b></p>
+<p>Функция <b>sendto </b>отправляет пакеты в определенное местоположение, <b>int sendto(</b></p>
+<p><b>SOCKET </b><i>s, </i><b>const char* </b><span>buf<i>, </i><b>int </b><span>len<i>, </i><b>int </b><span>flags<i>,</i></span></span></span></p>
+<p><b>const struct sockaddr* </b><span>to<i>,</i></span></p>
+<p><b>int </b><span>tolen</span></p>
+<p><i>)</i>;</p>
+<p>s - идентификатор сокета (возможно соединенного), buf - буфер, содержащий пакеты для отправки, len - длина buf, в байтах.</p>
+<p>flags - флаги, определяющие работу (желательно ставить 0). to - указатель на структуру <b>sockaddr, </b>в которой содержится информация о получателе.</p>
+<p>tolen - размер to, в байтах.</p> 
+<p>Если нет ошибок, функция <b>send </b>вернет число отправленных байт, которое может быть меньше чем значение 1еп. В других случаях вернет SOCKETJERROR.</p>
+<p><strong>4.1.1.14. Функция accept</strong></p>
+<p>Функция <b>accept </b>ожидает входящих соединений для сокета.</p>
+<p><b>SOCKET accept(</b></p>
+<p><b>SOCKET </b><i>s,</i></p>
+<p><b>struct sockaddr* </b><span>addr<i>, </i><b>int* </b><span>addrlen</span></span></p>
+<p>);</p>
+<p>s - прослушиваемый сокет.</p>
+<p>addr - указатель на структуру <b>sockaddr, </b>в которой содержится информация о клиенте.</p>
+<p>addrlen - размер addr, в байтах.</p>
+<p>Если нет ошибок, функция <b>accept </b>вернет значение типа <b>SOCKET </b>для нового сокета, связанного с соединением.</p>
+<ul>
+<li>4.1.2. <strong>Описание основных структур управления протоколами</strong></li>
+<li>4.1.2.1. <strong>Структура WSADATA</strong></li>
+</ul>
+<p>Структура <b>WSADATA </b>содержит информацию о Windows Sockets параметрах.</p>
+<p><b>typedef struct WSAData {</b></p>
+<p><b>WORD </b><span>wVersion<b>;</b></span></p>
+<p><b>WORD </b><span>wHighVersion<b>;</b></span></p>
+<p><b>char </b><span>szDescription<b>[WSADESCRIPTION LEN+1]; char </b><span>szSystemStatus<b>[WSASYS STATUS LEN+1]; unsigned short </b><span>iMaxSockets<b>; unsigned short </b><span>iMaxUdpDg<b>; char FAR* </b><span>lpVendorlnfо<b>;</b></span></span></span></span></span></p> 
+<p><b>} WSADATA, * LPWSADATA /</b></p>
+<p><b>wVersion </b>- версия Windows Sockets библиотеки Ws2_32.dll для использования.</p>
+<p><b>wHighVersion </b>- наивысшая версия Windows Sockets библиотеки <b>.dll. </b>Нормально если совпадает с <b>wVersion.</b></p>
+<p><b>szDescription </b>- строка с кратким описанием библиотеки Ws2_32.dll.</p>
+<p><b>szSystemStatus </b>- строка, содержащая состояние библиотеки Ws2_32.dll.</p>
+<p><b>iMaxSockets </b>- это значение игнорируется (оставлено для старых версий).</p>
+<p><b>iMaxUdpDg </b>- это значение игнорируется (оставлено для старых версий).</p>
+<p><b>lpVendorlnfo </b>- это значение игнорируется (оставлено для старых версий).</p>
+<p><strong>4.1.2.2. Структура addrinfo</strong></p>
+<p>Структура <b>addrinfo </b>используется для функции <b>getaddrinfo </b>для получения информации о хост- адресе.</p>
+<p><b>typedef struct addrinfo { int </b><span>ai flags<b>; int </b><span>ai family<b>; int </b><span>ai socktype<b>; int </b><span>ai protocol<b>; size_t </b><span>ai addrlen<b>; char* </b><span>ai canonname<b>; struct sockaddr* </b><span>ai addr<b>; struct addrinfo* </b><span>ai next<b>;</b></span></span></span></span></span></span></span></span></p>
+<p><b>} addrinfo;</b></p>
+<p><b>ai_flags </b>- флаги для функции <b>getaddrinfo. </b>AI_PASSIVE, AI_CANONNAME и AI_NUMERICHOST.</p>
+<p><b>ai_family </b>- семейство протоколов.</p> 
+<p><b>ai_socktype </b>- тип сокета. SOCK_RAW, SOCK_STREAM, или SOCK_DGRAM.</p>
+<p><b>ai_protocol </b>- тип протокола.</p>
+<p><b>ai_addrlen </b>- длина <b>ai_addr, </b>в байтах.</p>
+<p><b>ai_canonname </b>- каноническое имя хоста.</p>
+<p><b>ai_addr </b>- указатель на структуру <b>sockaddr.</b></p>
+<p><b>ai_next </b>- указатель на следующую структуру <b>addrinfo. </b>Если <b>NULL, </b>то структура <b>addrinfo </b>была последней в списке.</p>
+<p><b>4.1.2.3. Структура sockaddr</b></p>
+<p>Структура <b>sockaddr </b>содержит информацию о хосте, <b>struct sockaddr {</b></p>
+<p><b>u_short sa_family; char sa_data[14];</b></p>
+<p>};</p>
+<p><b>sa_family </b>- семейство протоколов.</p>
+<p><b>sa_data </b>- информация о хосте.</p>
+<p><b>4.1.3. Использование протоколов</b></p>
+<p>При программировании протоколов необходимо подключить библиотеку WS2_32.DLL при помощи функции <b>WSAStartup. </b>Затем получаем информацию об интересующем адресе функцией <b>getaddrinfo, </b>если мы используем протоколы семейства TCP/IP. Создаем сокет с параметрами нашего протокола с помощью функции <b>socket.</b></p>
+<p>Если мы используем сервер, то созданный сокет необходимо закрепить за определенным локальным адресом при помощи функции <b>bind, </b>затем вызвать функцию <b>listen </b>для этого сокета с заданным количеством соединений, если мы используем логический канал. Вызываем функцию <b>accept, </b>которая ожидает соединения с сервером и при входящем подключении создает новый сокет для логического канала. Использовать функцию <b>recv </b>для получения входящих пакетов логического канала или <b>recvfrom </b>для дейтаграмм. При использовании логического канала мы можем с помощью сервера отослать пакеты клиенту первыми через функцию <b>send, </b>а при дейтаграммах нам необходимо дождаться пакет от клиента, чтобы определить его адрес для функции <b>send to.</b></p>
+<p>При использовании клиента, после создания сокета, мы можем сразу подключиться к серверу функцией <b>connect </b>и начать передачу и прием пакетов для логического канала и дейтаграмм с использованием функций <b>send </b>и <b>recv.</b></p>
+<p>После завершения работы с сокетами, приложение должно отключить библиотеку WS2_32.DLL, используя функцию <b>WSACleanup </b>столько раз, сколько она была подключена.</p>
+<ul>
+<li>4.1.4. <b>Примеры фрагмента программ</b></li>
+<li>4.1.4.1. <b>Пример сервера с протоколом TCP</b></li>
+</ul>
+<p>Простейший сервер использует локальный адрес и порт с номером 1212. Его задачей является ожидание подключения клиента и приём от него пакетов длиной 512, после приема каждого пакета отсылать строку “ОК!!!” в качестве подтверждения.</p>
+<p>//--------------------------------------------------</p>
+<p>#include <stdio.h></stdio.h></p>
+<p>#include <windows.h></windows.h></p>
+<p>#include <ws2tcpip.h></ws2tcpip.h></p>
+<p>#pragma hdrstop</p>
+<p>//--------------------------------------------------</p>
+<p>#pragma argsused int main()</p>
+<p>{</p>
+<p>ADDRINFO fjhints, *f_addrinfo;</p>
+<p>SOCKET f_socket;</p>
+<p>memset(&amp;f_hints, 0, sizeof(ADDRINFO));</p>
+<p>fjhints.ai_family=PF_INET;</p> 
+<p>f^hints.ai_socktype=SOCK_STREAM; f_hints.ai_flags=AI_NUMERICHOST | AI^PASSIVE;</p>
+<p>WSADATA f_wsadata;</p>
+<p>if(WSAStartup(MAKEWORD(2, 2), Sf^wsadata)!-0) return 0;</p>
+<p>if(getaddrinfo("0.0.0.0", "1212", &amp;f_hints, &amp;f_addrinfo)!=0) return 0;</p>
+<p>if(f_addrinfo->ai_family!=PF_INET && f_addrinfo- >ai_family!=PF_INET6)</p>
+<p>{</p>
+<p>freeaddrinfo(f^addrinfo); return 0;</p>
+<p>}</p>
+<p>f_socket=socket(f_addrinfo->ai_family, f^addrinfo- >ai_socktype, f_addrinfo->ai_protocol); if(f_socket==INVALID_SOCKET)</p>
+<p>{</p>
+<p>freeaddrinfo(f_addrinfo); return 0;</p>
+<p>}</p>
+<p>if(bind(f_socket, f_addrinfo->ai_addr, f^addrinfo- >ai_addrlen)==SOCKET_ERROR</p>
+<p>II listen(f_socket, 64)==SOCKET_ERROR)</p>
+<p>{</p>
+<p>closesocket(f_socket); freeaddrinfo(f_addrinfo); return 0;</p>
+<p>}</p>
+<p>freeaddrinfo(f_addrinfo);</p>
+<p>SOCKADDR_STORAGE f_from; int f^fromlen; while (1)</p>
+<p>{</p>
+<p>SOCKET f_socket2; f fromlen=sizeof(f from);</p> 
+<p>f_socket2=accept(f_socket,</p>
+<p>(LPSOCKADDR)&amp;f_from, Sf^fromlen);</p>
+<p>if(f_socket2==INVALID_SOCKE T) break;</p>
+<p>char f_data[512]; while(1)</p>
+<p>{</p>
+<p>memset(f_data, 0, 512);</p>
+<p>int f_size=recv(f_socket2, f_data, 512, 0);</p>
+<p>if(f_size<l)></l)></p>
+<p>printf("%s/n", f_data);</p>
+<p>send(f_socket2, "OK!!!", 6, 0);</p>
+<p>}</p>
+<p>closesocket(f_socket2);</p>
+<p>}</p>
+<p>closesocket(f_socket);</p>
+<p>WSACleanup(); return 0;</p>
+<p>}</p>
+<p>//--------------------------------------------------</p>
+<p><strong>4.1.4.2. Пример фрагмента программы клиента с протоколом TCP</strong></p>
+<p>Клиент соединяется с сервером и передает пакет с введенной строкой, затем высвечивает на экран строку с подтверждением “ОК!!!” от сервера.</p>
+<p>//--------------------------------------------------</p>
+<p>#include <stdio.h></stdio.h></p>
+<p>#include <windows.h></windows.h></p>
+<p>#include <ws2tcpip.h></ws2tcpip.h></p>
+<p>#pragma hdrstop</p>
+<p>//--------------------------------------------------</p>
+<p>#pragma argsused int main()</p> 
+<p>{</p>
+<p>ADDRINFO f_hints, *f_addrinfo;</p>
+<p>SOCKET f_socket;</p>
+<p>memset(&amp;f_hints, 0, sizeof(f_hints)); f^hints.ai_family=PF_INET; f^hints.ai_socktype=SOCK_STREAM;</p>
+<p>WSADATA f_wsadata;</p>
+<p>if(WSAStartup(MAKEWORD(2, 2), Sf^wsadata)!-0) return 0;</p>
+<p>if(getaddrinfo("127.0.0.1", "1212", &amp;f_hints, &amp;f_addrinfo)!=0) return 0;</p>
+<p>f_socket=socket(f_addrinfo->ai_family, f^addrinfo- >ai_socktype, f_addrinfo->ai_protocol); if(f_socket==INVALID_SOCKET)</p>
+<p>{</p>
+<p>freeaddrinfo(f^addrinfo); return 0;</p>
+<p>}</p>
+<p>if(connect(f_socket, f_addrinfo->ai_addr, f_addrinfo->ai_addrlen)==SOCKET_ERROR)</p>
+<p>{</p>
+<p>freeaddrinfo(f^addrinfo); closesocket(f^socket); return 0;</p>
+<p>}</p>
+<p>freeaddrinfo(f_addrinfo) ; char f_data[512]; while (1)</p>
+<p>{</p>
+<p>gets(f_data);</p>
+<p>if(send(f_socket, f_data, strlen(f_data)+1,</p>
+<p>0)!=SOCKET_ERROR)</p>
+<p>{</p>
+<p>recv(f_socket, f_data, 512, 0); puts(f_data);</p>
+<p>}</p>
+<p>else</p> 
+<p>{</p>
+<p>WSACleanup() ; return 0;</p>
+<p>}</p>
+<p>}</p>
+<p>return 0;</p>
+<p>}</p>
+<p>//--------------------------------------------------</p>
+<p><strong>4.1.4.З. Комментарии к примерам</strong></p>
+<p>Для написания приложений с другими протоколами достаточно изменить их идентификаторы в функциях и ввести соответствующие адреса.</p>
+<p>Текущие примеры используют файл включения ws2tcpip.h, который также используется для протокола UDP. Если вы собираетесь использовать протоколы SPX и IPX, то необходимо включить в программу файл wsipx.h, содержащий дополнительные структуры и описания.</p>
+<p>Примеры написаны на Borland Developer Studio 2012. Для подробной справки используйте справочную систему вашего компилятора.</p><div id="gads_btm" class="advconts advbot"><div id='div-650x333_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_2');
+        });
+    </script>
+</div></div>            
+    </main>
+    <div class="wrap">
+        <a href="27. ПРИМЕРЫ РЕАЛИЗАЦИИ ПРОГРАММНОГО ПРИЛОЖЕНИЯ.html">
+            <button class="button">Пред</button>
+        </a>
+        <a href="29. Программирование протокола NetBIOS.html">
+            <button class="button">След</button>
+        </a>
+    </div> 
+</body>
+</html>

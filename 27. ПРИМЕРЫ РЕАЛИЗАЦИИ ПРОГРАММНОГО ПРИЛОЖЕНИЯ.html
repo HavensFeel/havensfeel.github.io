@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/KS.css">    
+</head>
+<body>
+    <header class="bg-ex-gradient-animation">
+        <img src="img/logo_3.png">
+        <h1><a href="index.html" class="underline-one">ГПОУ ТО "ДКИТ"</a></h1>
+    </header>
+    <main>
+        
+				<h1 class='lev1' id='219790'>ПРИМЕРЫ РЕАЛИЗАЦИИ ПРОГРАММНОГО ПРИЛОЖЕНИЯ</h1><div class="advconts advtop"><div id='div-336x280_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_1');
+        });
+    </script>
+</div></div>
+<p>Для организации взаимодействия прикладных процессов в современных вычислительных, компьютерных сетях различного уровня и масштаба необходимо использовать сетевые протоколы [14, 15, 16, 17].</p>
+<p><b>Определение 1. </b>Протоколом называется набор правил для одной из коммуникационных функций.</p>
+<p><b>Определение 2. </b>Протокол - это набор синтаксических и семантических правил, в соответствии с которыми осуществляется взаимодействие процессов одного уровня в сети.</p>
+<p><b>Определение 3. </b>Стек протоколов представляет собой набор организованных по уровням протоколов, которые, работая совместно, позволяют приложениям обмениваться данными.</p>
+<p><b>Определение 4. </b>Набор протоколов - это семейство протоколов, работающий совместно и связанных между собой. Набор протоколов TCP/IP обеспечивает множество различных возможностей, начиная от динамического определения адреса сетевого адаптера и заканчивая службой каталогов, определяющей способ доставки сообщения электронной почты.</p>
+<div class="advconts adv1"><div id='div-650x333_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_1');
+        });
+    </script>
+</div></div><p><b>Определение 5. </b>Хостом называется компьютер, который выполняет приложения и имеет одного или нескольких пользователей. Поддерживающий TCP/IP хост, работает как конечная точка сетевой коммуникации.</p>
+<p><b>Пример создания клиент-серверного приложения на основе потокового сокета.</b></p>
+<p>Для начала разработки подключите к проекту библиотеку <b>ws2_32.1ib </b>(в MVC++12.0: Project -> Settings -> Link -> Object/library modules, необходимо обязательно в конце строки дописать). Подключите используемый файл winsock2.h:</p>
+<p>#include <winsock2.h></winsock2.h></p>
+<p>До начала использования функций WinSock необходимо выполнить инициализацию WinSock.</p>
+<p>WSADATA WSAData; // После инициализации содерж инф. о WinSock</p>
+<p>if (WSAStartup (MAKEWORD(2,1), &amp;WSAData) != 0)</p>
+<p>{ printf ("WSAStartup faild. Error: %d", WSAGetLastError ()); return FALSE;</p>
+<p>}</p>
+<p>Приложение СЕРВЕР</p>
+<p>Откройте сокет при помощи <b>socket </b>функции.</p>
+<p>Используйте AF_INET (семейство интернет протоколов) дня формата адреса (address format) и SOCK_STREAM (потоковый сокет) для типа используемого сокета (type parameter.)</p>
+<div class="advconts adv2"><div id='div-336x280_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_2');
+        });
+    </script>
+</div></div><p>Пример открытия сокета.</p>
+<p>int WinSocket;</p>
+<p>if ((WinSocket = socket (AF_INET, SOCK_STREAM, 0)) ==</p>
+<p>INVALID_SOCKET)</p>
+<p>{</p>
+<p>printf ("Allocating socket failed. Error: %d", WSAGetLastError () ) ; return -1;</p>
+<p>}</p>
+<p>Установление соединения с клиентом <b>accept </b>функцией. Потоковый сокет TCP использует функцию <b>accept </b>дня приема запроса на соединение от клиента и именования данного соединения между клиентом и сервером. Функция <b>accept </b>создает новый сокет. Исходный сокет используется сервером дня прослушивания запросов на соединение от клиентов.</p>
+<p>printf("Waiting connect from client. 
+"); int ClientSock;</p>
+<p>accept_sin_len = sizeof (accept_sin);</p>
+<p>// Accept an incoming connection attempt on WinSocket. ClientSock = accept (WinSocket,</p>
+<p>(struct sockaddr *)</p>
+<p>&amp;accept_sin,</p>
+<p>(int *) &amp;accept_sin_len);</p>
+<p>// Stop listening for connections from clients, closesocket (WinSocket);</p> 
+<p>if (ClientSock == INVALID_SOCKET)</p>
+<div class="advconts adv3"><div id='div-336x280_hb_3'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_3');
+        });
+    </script>
+</div></div><p>{</p>
+<p>printf ("Accepting connection with client failed. Error: %d", WSAGetLastError ()); return FALSE;</p>
+<p>}</p><div id="gads_btm" class="advconts advbot"><div id='div-650x333_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_2');
+        });
+    </script>
+</div></div>            
+    </main>
+    <div class="wrap">
+        <a href="26. Контрольные вопросы к разделу.html">
+            <button class="button">Пред</button>
+        </a>
+        <a href="28. Программирование протоколов TCP, UDP, SPX, IPX.html">
+            <button class="button">След</button>
+        </a>
+    </div> 
+</body>
+</html>

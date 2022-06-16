@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/KS.css">    
+</head>
+<body>
+    <header class="bg-ex-gradient-animation">
+        <img src="img/logo_3.png">
+        <h1><a href="index.html" class="underline-one">ГПОУ ТО "ДКИТ"</a></h1>
+    </header>
+    <main>
+        
+				<h1 class='lev2' id='240895'>Программирование протокола NetBIOS</h1><div class="advconts advtop"><div id='div-336x280_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_1');
+        });
+    </script>
+</div></div>
+<ul>
+<li>4.2.1. <strong>Описание основных функций управления протоколом</strong></li>
+<li>4.2.1.1. <strong>Функция Netbios</strong></li>
+</ul>
+<p>Функция <b>Netbios </b>предоставляет доступ к системам управления протоколом NetBIOS.</p>
+<p><b>UCHAR Netbios(</b></p>
+<p><b>PNCB pncb</b></p>
+<p>);</p>
+<p>pncb - указатель на структуру <b>NCB, </b>которая описывает сетевые контрольные блоки.</p>
+<p>Функция возвращает значение <b>ncb_retcode, </b>находящееся в структуре <b>NCB.</b></p> 
+<ul>
+<li>4.2.2. <b>Описание основных структур управления протоколом</b></li>
+<li>4.2.2.1. <b>Структура NCB</b></li>
+</ul>
+<p>Структура <b>NCB </b>содержит информацию о командах, опциях и указателях на блоки памяти.</p>
+<p><b>typedef struct _NCB {</b></p>
+<p><b>UCHAR ncb_command ;</b></p>
+<p><b>UCHAR ncb_retcode;</b></p>
+<p><b>UCHAR ncb_lsn;</b></p>
+<p><b>UCHAR ncb_num;</b></p>
+<p><b>PUCHAR ncb_buffer;</b></p>
+<p><b>WORD ncb_length;</b></p>
+<div class="advconts adv1"><div id='div-650x333_hb_1'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_1');
+        });
+    </script>
+</div></div><p><b>UCHAR ncb_callname[NCBNAMSZ]/</b></p>
+<p><b>UCHAR ncb_name [NCBNAMSZ] ;</b></p>
+<p><b>UCHAR ncb_rto;</b></p>
+<p><b>UCHAR ncb_sto;</b></p>
+<p><b>void (CALLBACK *ncb_joost) (struct _NCB *);</b></p>
+<p><b>UCHAR ncb_lana_num;</b></p>
+<p><b>UCHAR ncb_cmd_cplt;</b></p>
+<p><b>#ifdef _WIN64</b></p>
+<p><b>UCHAR ncb_reserve[18];</b></p>
+<p><b>#else</b></p> 
+<p><b>UCHAR ncb_reserve[10]; #endif</b></p>
+<p><b>HANDLE ncb_event;</b></p>
+<p><b>} NCB, *PNCB;</b></p>
+<p><b>ncb_command </b>- команда для выполнения функцией <b>Netbios. ncb_retcode </b>- возвращает результат после выполнения операции.</p>
+<p><b>ncb_lsn </b>- идентификатор номера сессии после удачного выполнения команды NCBCALL</p>
+<p><b>ncbjnum </b>- содержит номер локального имени после удачного выполнения команды NCBADDNAME. Применяется для всех команд, использующих дейтаграммы.</p>
+<p>ncbjbuffer - указатель на буфер памяти.</p>
+<p><b>ncb_length </b>- размер буфера, в байтах.</p>
+<p><b>ncb_callname </b>- имя удаленного приложения.</p>
+<div class="advconts adv2"><div id='div-336x280_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_2');
+        });
+    </script>
+</div></div><p><b>ncbjname </b>- имя, которое использует приложение для связи.</p>
+<p><b>ncb_rto </b>- тайм-аут для операции приема пакетов NCBRECV.</p>
+<p><b>ncb_sto </b>- тайм-аут для операции отсылки пакетов NCBSEND.</p>
+<p><b>ncb_post </b>- содержит адрес сообщения для вызова асинхронных команд.</p>
+<p><b>ncb_lana_num </b>- содержит номер LAN адаптера. <b>ncb_cmd_cplt </b>- то же, что и <b>ncb_retcode. ncb_reserve </b>- зарезервировано. Должно быть нулем. <b>ncb_event </b>- содержит хендл объекта сообщения.</p>
+<p><strong>4.2.3. Использование протокола</strong></p>
+<p>В начале программы необходимо подготовить приложение к работе, используя команду NCBRESET с параметрами количества имен и сессий. Затем добавить новое имя в список локальных имен командой NCBADDNAME.</p> 
+<p>Если мы используем логический канал, то необходимо использовать команду NCBLISTEN для ожидания входящих подключений для сервера, а для клиента мы используем команду NCBCALL для подключения. После установки соединения по логическому каналу мы можем использовать команду NCBSEND для отсылки сообщений и команду NCBRECV для их приема. Для разрыва канала необходимо воспользоваться командой NCBHANGUP для сервера или клиента.</p>
+<div class="advconts adv3"><div id='div-336x280_hb_3'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-336x280_hb_3');
+        });
+    </script>
+</div></div><p>Если пользуемся дейтаграммами, то сразу для сервера используем команду приема сообщений NCBDGRECV, а для клиента команду передачи сообщения NCBDGSEND.</p>
+<p>Для удаления неиспользуемого имени из списка возьмем команду NCBDELNAME, а для вывода списка имен команду NCBASTAT. LAN- адаптеры можно посмотреть с помощью команды NCBENUM.</p>
+<ul>
+<li>4.2.4. <strong>Примеры программ</strong></li>
+<li>4.2.4.1. <strong>Пример фрагмента программы сервера с протоколом NetBIOS</strong></li>
+</ul>
+<p>Сервер использует LAN-адаптер с номером 0 и локальное имя “NewServer”. Ожидает подключения клиента с любым именем, принимает от него пакеты размером 512 байт. После каждого принятого пакета отсылает клиенту строку “ОК!!!”. После выхода из приложения все имена текущего приложения автоматически удаляются из списка локальных имен. В данном примере рассмотрен сервер, использующий логический канал.</p>
+<p>//--------------------------------------------------</p>
+<p>#include <stdio.h></stdio.h></p>
+<p>#include <windows.h></windows.h></p>
+<p>#include <nb30.h></nb30.h></p>
+<p>#pragma hdrstop</p>
+<p>//--------------------------------------------------</p>
+<p>#pragma argsused int main()</p>
+<p>{</p> 
+<p>NCB f^ncb;</p>
+<p>int Netbios_Lana=0;</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f^ncb.ncb_command=NCBRESET; f^ncb.ncb_lsn=0; f_ncb.ncb_callname[0]=20; f^ncb.ncb_callname[2]=30; f _ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) return 0;</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f_ncb.ncb_command=NCBADDNAME; memset(f_ncb.ncb_name, 0, NCBNAMSZ); strcpy(f_ncb.ncb_name, "NewServer"); f_ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) return 0;</p>
+<p>int F_Session=-l;</p>
+<p>while(1)</p>
+<p>{</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f_ncb.ncb_command=NCBLISTEN; memset(f_ncb.ncb_callname, 0, NCBNAMSZ); strcpy(f_ncb.ncb_callname, "*"); memset(f_ncb.ncb_name, 0, NCBNAMSZ); strcpy(f_ncb.ncb_name, "NewServer"); f_ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f^ncb.ncb_retcode!=0) return 0; F_Session=f_ncb.ncb_lsn;</p>
+<p>unsigned char Data[512];</p> 
+<p>while(1)</p>
+<p>{</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB));</p>
+<p>f_ncb.ncb_command=NCBRECV;</p>
+<p>f_ncb.ncb_lsn=F_Session;</p>
+<p>f^ncb.ncb_buffer=Data;</p>
+<p>f_ncb.ncb_length=512;</p>
+<p>f^ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) break;</p>
+<p>puts(Data);</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f^ncb.ncb_command=NCBSEND; f^ncb.ncb_lsn=F_Session;</p>
+<p>f_ncb.ncb_buffer=(unsigned char*)"OK!!!";</p>
+<p>f_ncb.ncb_length=6;</p>
+<p>f^ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>}</p>
+<p>}</p>
+<p>return 0;</p>
+<p>}</p>
+<p>//--------------------------------------------------</p>
+<p><strong>4.2.4.2. Пример фрагмента программы клиента с протоколом NetBIOS</strong></p>
+<p>Клиент использует LAN- адаптер 0 и локальное имя “NewClient”. Соединяется с сервером по логическому каналу и передает введенные строки, затем получает от сервера строку “ОК!!!”. Также после выхода все локальные имена приложения удаляются.</p>
+<p>//-------------------------------------------------#include <stdio.h> #include <windows.h> #include <nb30.h> #pragma hdrstop</nb30.h></windows.h></stdio.h></p>
+<p>//------------------</p>
+<p>#pragma argsused int main()</p>
+<p>{</p>
+<p>NCB f^ncb;</p>
+<p>int Netbios_Lana=0;</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f^ncb.ncb_command=NCBRESET; f_ncb.ncb_lsn=0; f_ncb.ncb_callname[0]=20; f^ncb.ncb_callname[2]=30; f_ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) return 0;</p>
+<p>memset. (&amp;f_ncb, 0, sizeof (NCB) ) ; f_ncb.ncb_command=NCBADDNAME; memset(f_ncb.ncb_name, 0, NCBNAMSZ); strcpy(f_ncb.ncb_name, "NewClient"); f_ncb.ncb_lana_num=Netbios_Lana;</p>
+<p>Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) return 0;</p>
+<p>int F_Session=-l ;</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB));</p>
+<p>f_ncb.ncb_command=NCBCALL;</p>
+<p>memset(f_ncb.ncb_callname, 0, NCBNAMSZ);</p>
+<p>strcpy(f_ncb.ncb_callname, "NewServer");</p> 
+<p>memset(f_ncb.ncb_name, 0, NCBNAMSZ); strcpy(f_ncb.ncb_name, "NewClient"); f_ncb.ncb_lana_num=Netbios_Lana; Netbios(&amp;f_ncb);</p>
+<p>if(f_ncb.ncb_retcode!=0) return 0; F_Session=f_ncb.ncb_lsn;</p>
+<p>unsigned char Data[512];</p>
+<p>while (1)</p>
+<p>{</p>
+<p>gets(Data);</p>
+<p>memset(Sf^ncb, 0, sizeof(NCB)); f_ncb.ncb_command=NCBSEND; f_ncb.ncb_lsn=F_Session; f_ncb.ncb_buffer=Data; f_ncb.ncb_length=strlen(Data)+1; f_ncb.ncb_lana_num=Netbios_Lana; Netbios(&amp;f_ncb);</p>
+<p>memset(&amp;f_ncb, 0, sizeof(NCB)); f_ncb.ncb_command=NCBRECV; f_ncb.ncb_lsn=F_Session; f_ncb.ncb_buffer=Data; f_ncb.ncb_length=512; f_ncb.ncb_lana_num=Netbios_Lana; Netbios(&amp;f_ncb); if(f_ncb.ncb_retcode!=0) break;</p>
+<p>puts(Data);</p>
+<p>}</p>
+<p>return 0;</p>
+<p>}</p>
+<p>//-------------------------------------</p> 
+<p><strong>4.2.4.3. Комментарии к примерам</strong></p>
+<p>Для построения приложения с дейтаграммами не нужно использовать команды прослушивания и вызова, достаточно просто начать прием дейтаграмм или их передачу. Также используются номера имен, а не их значения.</p>
+<p>Примеры написаны на Borland Developer Studio 2012. Для подробной справки используйте справочную систему вашего компилятора.</p><div id="gads_btm" class="advconts advbot"><div id='div-650x333_hb_2'>
+    <script type='text/javascript'>
+        googletag.cmd.push(function() {
+            googletag.display('div-650x333_hb_2');
+        });
+    </script>
+</div></div>            
+    </main>
+    <div class="wrap">
+        <a href="28. Программирование протоколов TCP, UDP, SPX, IPX.html">
+            <button class="button">Пред</button>
+        </a>
+        <a href="30. Примеры реализации программ.html">
+            <button class="button">След</button>
+        </a>
+    </div> 
+</body>
+</html>
